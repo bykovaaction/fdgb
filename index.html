@@ -111,23 +111,22 @@
     }
 
     .track-icon {
-      width: 34px; height: 34px;
-      border-radius: 8px;
+      width: auto; height: auto;
       display: flex; align-items: center; justify-content: center;
-      font-size: 1rem;
+      font-size: 1.2rem;
+      font-weight: 800;
       flex-shrink: 0;
       transition: all 200ms;
     }
 
     .track-btn:not(.active) .track-icon {
-      background: var(--bg);
-      opacity: 0.6;
+      opacity: 0.75;
     }
 
     .track-btn.active .track-icon { opacity: 1; }
-    .track-icon.g { background: var(--green-light); }
-    .track-icon.a { background: var(--amber-bg); }
-    .track-icon.b { background: var(--blue-bg); }
+    .track-icon.g { color: var(--green); }
+    .track-icon.a { color: var(--amber); }
+    .track-icon.b { color: var(--blue); }
 
     .track-text { flex: 1; min-width: 0; }
 
@@ -257,17 +256,18 @@
     }
 
     .c-icon {
-      width: 36px; height: 36px;
-      border-radius: 9px;
+      width: auto; height: auto;
       display: flex; align-items: center; justify-content: center;
-      font-size: 1.05rem;
+      font-size: 1.28rem;
+      line-height: 1;
       margin-bottom: 12px;
+      font-weight: 800;
     }
 
-    .c-icon.g { background: var(--green-light); }
-    .c-icon.a { background: var(--amber-bg); }
-    .c-icon.r { background: var(--red-bg); }
-    .c-icon.b { background: var(--blue-bg); }
+    .c-icon.g { color: var(--green); }
+    .c-icon.a { color: var(--amber); }
+    .c-icon.r { color: var(--red); }
+    .c-icon.b { color: var(--blue); }
 
     .c-title {
       font-weight: 600;
@@ -330,15 +330,15 @@
 
     .step-num {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      font-weight: 600;
+      font-size: 0.85rem;
+      font-weight: 800;
       color: var(--blue);
-      background: var(--blue-bg);
-      width: 28px; height: 28px;
-      border-radius: 6px;
+      background: transparent;
+      width: auto; height: auto;
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
       margin-top: 1px;
+      letter-spacing: 0.06em;
     }
 
     .step-content strong {

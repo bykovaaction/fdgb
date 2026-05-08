@@ -10,9 +10,9 @@
     :root {
       --bg: #f2f2f2;
       --surface: #ffffff;
-      --surface2: #f7faf8;
-      --border: rgba(20,50,35,0.1);
-      --border-hi: rgba(20,50,35,0.2);
+      --surface2: #f6f6f6;
+      --border: rgba(0,0,0,0.12);
+      --border-hi: rgba(0,0,0,0.20);
       --green: #1a7a4a;
       --green-mid: #2d9e65;
       --green-light: rgba(26,122,74,0.08);
@@ -86,7 +86,7 @@
       border: 1px solid var(--border);
       border-radius: 14px;
       padding: 6px;
-      box-shadow: 0 2px 12px rgba(20,50,35,0.06);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
     }
 
     .track-btn {
@@ -107,7 +107,7 @@
 
     .track-btn.active {
       background: var(--surface2);
-      box-shadow: 0 0 0 1px var(--border-hi), 0 2px 10px rgba(20,50,35,0.08);
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.14), 0 2px 10px rgba(0,0,0,0.10);
     }
 
     .track-icon {
@@ -179,18 +179,8 @@
       margin-bottom: 10px;
       position: relative;
       overflow: hidden;
-      box-shadow: 0 2px 12px rgba(20,50,35,0.05);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
     }
-
-    .hero-card::after {
-      content: '';
-      position: absolute;
-      top: -40px; right: -40px;
-      width: 180px; height: 180px;
-      background: radial-gradient(circle, var(--green-glow), transparent 65%);
-      pointer-events: none;
-    }
-
     .hero-label {
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.67rem;
@@ -213,7 +203,7 @@
       gap: 28px;
       padding-top: 14px;
       margin-top: 14px;
-      border-top: 1px solid var(--border);
+      border-top: 1px solid rgba(0,0,0,0.12);
       flex-wrap: wrap;
     }
 
@@ -246,13 +236,13 @@
       border-radius: 12px;
       padding: 18px;
       transition: border-color 180ms, transform 180ms, box-shadow 180ms;
-      box-shadow: 0 1px 6px rgba(20,50,35,0.04);
+      box-shadow: 0 1px 6px rgba(0,0,0,0.06);
     }
 
     .card:hover {
       border-color: var(--border-hi);
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(20,50,35,0.09);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.12);
     }
 
     .c-icon {
@@ -309,7 +299,7 @@
       border-radius: 10px;
       padding: 15px 18px;
       transition: border-color 180ms, box-shadow 180ms;
-      box-shadow: 0 1px 4px rgba(20,50,35,0.04);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
       animation: stepIn 0.35s ease both;
     }
 
@@ -325,7 +315,7 @@
 
     .step-row:hover {
       border-color: rgba(29,95,168,0.25);
-      box-shadow: 0 4px 16px rgba(29,95,168,0.07);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.10);
     }
 
     .step-num {

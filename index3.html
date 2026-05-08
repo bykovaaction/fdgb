@@ -1,0 +1,590 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Главбух и Финдир</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Unbounded:wght@600;800&family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f0f4f1;
+      --surface: #ffffff;
+      --surface2: #f7faf8;
+      --border: rgba(20,50,35,0.1);
+      --border-hi: rgba(20,50,35,0.2);
+      --green: #1a7a4a;
+      --green-mid: #2d9e65;
+      --green-light: rgba(26,122,74,0.08);
+      --green-glow: rgba(26,122,74,0.15);
+      --amber: #b87c10;
+      --amber-bg: rgba(184,124,16,0.07);
+      --amber-border: rgba(184,124,16,0.22);
+      --red: #c0392b;
+      --red-bg: rgba(192,57,43,0.07);
+      --blue: #1d5fa8;
+      --blue-bg: rgba(29,95,168,0.08);
+      --text: #0f1f16;
+      --muted: #5a7064;
+      --muted2: #b8cbbe;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Onest', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 32px 20px;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(26,122,74,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(26,122,74,0.04) 1px, transparent 1px);
+      background-size: 36px 36px;
+      pointer-events: none;
+    }
+
+    .shell {
+      position: relative;
+      width: min(820px, 100%);
+      z-index: 1;
+    }
+
+    /* Верхняя строка */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 20px;
+    }
+
+    .badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--green);
+      letter-spacing: 0.06em;
+      background: var(--green-light);
+      border: 1px solid rgba(26,122,74,0.18);
+      padding: 5px 12px;
+      border-radius: 20px;
+    }
+
+    .badge-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--green-mid);
+      animation: pulse 2.2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%,100% { opacity: 1; }
+      50% { opacity: 0.35; }
+    }
+
+    .module-id {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--muted2);
+      letter-spacing: 0.1em;
+    }
+
+    /* Заголовок */
+    .title-block {
+      margin-bottom: 28px;
+    }
+
+    h1 {
+      font-family: 'Unbounded', sans-serif;
+      font-size: clamp(1.35rem, 3.5vw, 2.1rem);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      color: var(--text);
+    }
+
+    h1 span { color: var(--green); }
+
+    .subtitle {
+      margin-top: 10px;
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.65;
+      max-width: 500px;
+    }
+
+    /* Навигация */
+    .progress-track {
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+      margin-bottom: 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 6px;
+      box-shadow: 0 2px 12px rgba(20,50,35,0.06);
+    }
+
+    .track-btn {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: none;
+      border: none;
+      padding: 11px 14px;
+      cursor: pointer;
+      border-radius: 9px;
+      transition: all 200ms ease;
+      text-align: left;
+    }
+
+    .track-btn:hover .track-label { color: var(--text); }
+
+    .track-btn.active {
+      background: var(--surface2);
+      box-shadow: 0 0 0 1px var(--border-hi), 0 2px 10px rgba(20,50,35,0.08);
+    }
+
+    .track-icon {
+      width: 34px; height: 34px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+      transition: all 200ms;
+    }
+
+    .track-btn:not(.active) .track-icon {
+      background: var(--bg);
+      opacity: 0.6;
+    }
+
+    .track-btn.active .track-icon { opacity: 1; }
+    .track-icon.g { background: var(--green-light); }
+    .track-icon.a { background: var(--amber-bg); }
+    .track-icon.b { background: var(--blue-bg); }
+
+    .track-text { flex: 1; min-width: 0; }
+
+    .track-label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--muted);
+      transition: color 200ms;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .track-btn.active .track-label { color: var(--text); }
+
+    .track-sub {
+      display: block;
+      font-size: 0.68rem;
+      color: var(--muted2);
+      margin-top: 1px;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.05em;
+    }
+
+    .track-btn.active .track-sub { color: var(--green); }
+
+    .track-sep {
+      width: 1px;
+      background: var(--border);
+      margin: 6px 0;
+      flex-shrink: 0;
+    }
+
+    /* Панели */
+    .panels-wrap { min-height: 340px; }
+
+    .panel { display: none; animation: panelIn 0.32s cubic-bezier(.22,.8,.24,1); }
+    .panel.active { display: block; }
+
+    @keyframes panelIn {
+      from { opacity: 0; transform: translateY(10px) scale(0.99); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* Герой-карточка */
+    .hero-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px 24px 18px;
+      margin-bottom: 10px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(20,50,35,0.05);
+    }
+
+    .hero-card::after {
+      content: '';
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 180px; height: 180px;
+      background: radial-gradient(circle, var(--green-glow), transparent 65%);
+      pointer-events: none;
+    }
+
+    .hero-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.67rem;
+      color: var(--green);
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .hero-card p {
+      font-size: 0.97rem;
+      line-height: 1.72;
+      color: var(--muted);
+    }
+
+    .hero-card p strong { color: var(--text); font-weight: 600; }
+
+    .metric-row {
+      display: flex;
+      gap: 28px;
+      padding-top: 14px;
+      margin-top: 14px;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    .metric-val {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--green);
+      line-height: 1;
+    }
+
+    .metric-lbl {
+      font-size: 0.7rem;
+      color: var(--muted2);
+      margin-top: 3px;
+      letter-spacing: 0.04em;
+    }
+
+    /* Сетка карточек */
+    .cards-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .cards-grid.two   { grid-template-columns: repeat(auto-fit, minmax(230px,1fr)); }
+    .cards-grid.three { grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px;
+      transition: border-color 180ms, transform 180ms, box-shadow 180ms;
+      box-shadow: 0 1px 6px rgba(20,50,35,0.04);
+    }
+
+    .card:hover {
+      border-color: var(--border-hi);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(20,50,35,0.09);
+    }
+
+    .c-icon {
+      width: 36px; height: 36px;
+      border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.05rem;
+      margin-bottom: 12px;
+    }
+
+    .c-icon.g { background: var(--green-light); }
+    .c-icon.a { background: var(--amber-bg); }
+    .c-icon.r { background: var(--red-bg); }
+    .c-icon.b { background: var(--blue-bg); }
+
+    .c-title {
+      font-weight: 600;
+      font-size: 0.88rem;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+
+    .c-body {
+      font-size: 0.85rem;
+      line-height: 1.65;
+      color: var(--muted);
+    }
+
+    /* Предупреждение */
+    .warn-banner {
+      background: var(--amber-bg);
+      border: 1px solid var(--amber-border);
+      border-radius: 10px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 10px;
+      font-size: 0.88rem;
+      color: var(--amber);
+      line-height: 1.65;
+    }
+
+    .w-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+
+    /* Шаги */
+    .steps-list { display: grid; gap: 8px; }
+
+    .step-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 15px 18px;
+      transition: border-color 180ms, box-shadow 180ms;
+      box-shadow: 0 1px 4px rgba(20,50,35,0.04);
+      animation: stepIn 0.35s ease both;
+    }
+
+    .step-row:nth-child(1) { animation-delay: 0.04s; }
+    .step-row:nth-child(2) { animation-delay: 0.09s; }
+    .step-row:nth-child(3) { animation-delay: 0.14s; }
+    .step-row:nth-child(4) { animation-delay: 0.19s; }
+
+    @keyframes stepIn {
+      from { opacity:0; transform: translateX(-8px); }
+      to   { opacity:1; transform: translateX(0); }
+    }
+
+    .step-row:hover {
+      border-color: rgba(29,95,168,0.25);
+      box-shadow: 0 4px 16px rgba(29,95,168,0.07);
+    }
+
+    .step-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--blue);
+      background: var(--blue-bg);
+      width: 28px; height: 28px;
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .step-content strong {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 600;
+      margin-bottom: 3px;
+      color: var(--text);
+    }
+
+    .step-content span {
+      font-size: 0.84rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    @media (max-width: 580px) {
+      h1 { font-size: 1.2rem; }
+      .track-sub { display: none; }
+      .track-btn { padding: 10px 10px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+
+    <div class="topbar">
+      <div class="badge">
+        <div class="badge-dot"></div>
+        справочный модуль
+      </div>
+      <div class="module-id">FIN-MGT / v2.1</div>
+    </div>
+
+    <div class="title-block">
+      <h1>Главбух <span>&amp;</span> финдир<br>— два центра силы</h1>
+      <p class="subtitle">Изучите преимущества, оцените риски и разберитесь, как построить рабочий тандем.</p>
+    </div>
+
+    <div class="progress-track" role="tablist">
+      <button class="track-btn active" data-tab="benefits" role="tab" aria-selected="true">
+        <div class="track-icon g">✦</div>
+        <div class="track-text">
+          <span class="track-label">Преимущества</span>
+          <span class="track-sub">раздел 01</span>
+        </div>
+      </button>
+      <div class="track-sep"></div>
+      <button class="track-btn" data-tab="risks" role="tab" aria-selected="false">
+        <div class="track-icon a">⚠</div>
+        <div class="track-text">
+          <span class="track-label">Риски</span>
+          <span class="track-sub">раздел 02</span>
+        </div>
+      </button>
+      <div class="track-sep"></div>
+      <button class="track-btn" data-tab="interaction" role="tab" aria-selected="false">
+        <div class="track-icon b">⇄</div>
+        <div class="track-text">
+          <span class="track-label">Взаимодействие</span>
+          <span class="track-sub">раздел 03</span>
+        </div>
+      </button>
+    </div>
+
+    <div class="panels-wrap">
+
+      <!-- РАЗДЕЛ 1 -->
+      <article class="panel active" data-panel="benefits">
+        <div class="hero-card">
+          <div class="hero-label">// ключевой тезис</div>
+          <p>Разделение функций главбуха и финдира обеспечивает <strong>глубокую специализацию</strong> при высокой нагрузке и гарантирует независимый контроль над финансами — так называемый «контроль в две руки».</p>
+          <div class="metric-row">
+            <div>
+              <div class="metric-val">2×</div>
+              <div class="metric-lbl">независимых контроля</div>
+            </div>
+            <div>
+              <div class="metric-val">↓</div>
+              <div class="metric-lbl">риск ошибок</div>
+            </div>
+            <div>
+              <div class="metric-val">↑</div>
+              <div class="metric-lbl">качество решений</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cards-grid three">
+          <div class="card">
+            <div class="c-icon g">🎯</div>
+            <div class="c-title">Глубокая специализация</div>
+            <p class="c-body">Каждый менеджер фокусируется на своем профиле — учет отдельно, стратегия отдельно.</p>
+          </div>
+          <div class="card">
+            <div class="c-icon g">🔒</div>
+            <div class="c-title">Контроль в две руки</div>
+            <p class="c-body">Независимый надзор снижает риск ошибок и злоупотреблений в финансах компании.</p>
+          </div>
+          <div class="card">
+            <div class="c-icon g">⚡</div>
+            <div class="c-title">Масштабируемость</div>
+            <p class="c-body">При росте бизнеса один человек не справится с обоими направлениями без потери качества.</p>
+          </div>
+        </div>
+      </article>
+
+      <!-- РАЗДЕЛ 2 -->
+      <article class="panel" data-panel="risks">
+        <div class="warn-banner">
+          <span class="w-icon">⚠</span>
+          <span>Два сильных менеджера в одном блоке — это сила. Без четко прописанных полномочий эта сила легко превращается в трение и управленческий паралич.</span>
+        </div>
+
+        <div class="cards-grid two">
+          <div class="card">
+            <div class="c-icon r">🔀</div>
+            <div class="c-title">Пересечение функций</div>
+            <p class="c-body">Когда зоны ответственности не разграничены, оба занимаются одним — или не занимается никто. Особенно опасны «серые зоны».</p>
+          </div>
+          <div class="card">
+            <div class="c-icon a">⚡</div>
+            <div class="c-title">Конфликты и двоевластие</div>
+            <p class="c-body">Размытые полномочия порождают управленческие конфликты и замедляют принятие решений на уровне всей организации.</p>
+          </div>
+          <div class="card">
+            <div class="c-icon r">📉</div>
+            <div class="c-title">Потеря управляемости</div>
+            <p class="c-body">Сотрудники не понимают, к кому обращаться — авторитет обоих руководителей постепенно падает.</p>
+          </div>
+          <div class="card">
+            <div class="c-icon a">🧩</div>
+            <div class="c-title">Дублирование процессов</div>
+            <p class="c-body">Без разграниченных регламентов одни и те же задачи решаются параллельно, что создает лишнюю нагрузку на команду.</p>
+          </div>
+        </div>
+      </article>
+
+      <!-- РАЗДЕЛ 3 -->
+      <article class="panel" data-panel="interaction">
+        <div class="hero-card">
+          <div class="hero-label">// базовое условие</div>
+          <p>Детальные должностные инструкции и четкое разграничение полномочий — фундамент. Дальше — четыре шага к рабочему диалогу между менеджерами.</p>
+        </div>
+
+        <div class="steps-list">
+          <div class="step-row">
+            <div class="step-num">01</div>
+            <div class="step-content">
+              <strong>Выстроить бизнес-процессы в своем подразделении</strong>
+              <span>Каждый менеджер наводит порядок у себя — прежде чем взаимодействовать с соседним блоком.</span>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-num">02</div>
+            <div class="step-content">
+              <strong>Четко разделить смежные обязанности</strong>
+              <span>Особого внимания требуют «серые зоны» — функции, которые формально принадлежат обоим.</span>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-num">03</div>
+            <div class="step-content">
+              <strong>Исключить конфликты интересов и личные противоречия</strong>
+              <span>Устраняются через регламенты и процедуры, а не через человеческий фактор.</span>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-num">04</div>
+            <div class="step-content">
+              <strong>Работать в интересах общей стратегии</strong>
+              <span>Оба менеджера — союзники компании, а не конкуренты друг другу.</span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+
+  <script>
+    const btns = document.querySelectorAll('.track-btn');
+    const panels = document.querySelectorAll('.panel');
+
+    function show(id) {
+      btns.forEach(b => {
+        const on = b.dataset.tab === id;
+        b.classList.toggle('active', on);
+        b.setAttribute('aria-selected', on);
+      });
+      panels.forEach(p => p.classList.toggle('active', p.dataset.panel === id));
+    }
+
+    btns.forEach(b => b.addEventListener('click', () => show(b.dataset.tab)));
+  </script>
+</body>
+</html>

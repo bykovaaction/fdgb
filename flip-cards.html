@@ -3,441 +3,460 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Финдир и Главбух</title>
+  <title>Главбух и Финдир</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --bg: #e8e8e8;
-      --ink: #1c1c1c;
-      --accent: #F5811F;
-      --accent-light: rgba(245,129,31,0.10);
-      --accent-mid: rgba(245,129,31,0.28);
-      --surface: #ffffff;
-      --line: rgba(28,28,28,0.09);
-      --line-strong: rgba(28,28,28,0.13);
-      --muted: rgba(28,28,28,0.46);
-      --card-h: 330px;
+      --bg: #f6f2ea;
+      --paper: #fffdf8;
+      --ink: #191714;
+      --muted: #5e5850;
+      --line: rgba(25, 23, 20, 0.18);
+      --line-soft: rgba(25, 23, 20, 0.09);
+      --teal: #0f7668;
+      --rust: #b7482f;
+      --cobalt: #2a4e96;
+      --gold: #b7862a;
+      --shadow: 0 18px 36px rgba(28, 24, 19, 0.11);
     }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Inter', sans-serif;
-      background: var(--bg);
+      font-family: 'Manrope', sans-serif;
       color: var(--ink);
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 64px 24px 80px;
+      background:
+        radial-gradient(circle at 10% 12%, rgba(183, 134, 42, 0.16), transparent 38%),
+        radial-gradient(circle at 88% 20%, rgba(15, 118, 104, 0.12), transparent 32%),
+        linear-gradient(160deg, #f3efe7 0%, #f6f2ea 58%, #f1ece3 100%);
+      padding: 28px 18px 40px;
     }
 
-    /* HEADER */
-    .header {
-      text-align: center;
-      margin-bottom: 44px;
-      max-width: 560px;
+    .shell {
+      width: min(980px, 100%);
+      margin: 0 auto;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      border-radius: 20px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .shell::before,
+    .shell::after {
+      content: "";
+      position: absolute;
+      pointer-events: none;
+    }
+
+    .shell::before {
+      inset: 0;
+      background: linear-gradient(90deg, transparent 0%, rgba(25, 23, 20, 0.03) 50%, transparent 100%);
+      opacity: 0.45;
+      mix-blend-mode: multiply;
+    }
+
+    .shell::after {
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, var(--teal), var(--gold), var(--rust), var(--cobalt));
+    }
+
+    .head {
+      padding: 32px 34px 22px;
+      border-bottom: 1px solid var(--line-soft);
+      display: grid;
+      gap: 12px;
+      position: relative;
+      z-index: 1;
     }
 
     .eyebrow {
-      font-size: 0.65rem;
-      font-weight: 700;
-      letter-spacing: 0.22em;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 14px;
+      color: var(--muted);
       display: flex;
       align-items: center;
-      justify-content: center;
       gap: 10px;
     }
 
-    .eyebrow::before, .eyebrow::after {
-      content: '';
-      width: 28px; height: 1px;
-      background: var(--accent);
-      opacity: 0.55;
+    .eyebrow::before,
+    .eyebrow::after {
+      content: "";
+      height: 1px;
+      width: 34px;
+      background: var(--line);
     }
 
     h1 {
-      font-size: clamp(1.4rem, 3.6vw, 2rem);
-      font-weight: 700;
-      line-height: 1.22;
-      color: var(--ink);
+      font-size: clamp(1.44rem, 3.9vw, 2.5rem);
+      line-height: 1.08;
+      font-weight: 800;
       letter-spacing: -0.025em;
-      margin-bottom: 12px;
+      max-width: 760px;
     }
 
-    h1 span { color: var(--accent); }
+    h1 span {
+      color: var(--rust);
+      position: relative;
+    }
+
+    h1 span::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -3px;
+      height: 7px;
+      background: rgba(183, 72, 47, 0.2);
+      z-index: -1;
+    }
 
     .subtitle {
-      font-size: 0.875rem;
-      font-weight: 400;
+      max-width: 700px;
       color: var(--muted);
-      line-height: 1.7;
+      line-height: 1.62;
+      font-size: 0.96rem;
     }
 
-    /* HINT */
-    .hint {
-      font-size: 0.72rem;
-      font-weight: 500;
-      color: var(--muted);
-      letter-spacing: 0.04em;
-      margin-bottom: 32px;
-      display: flex;
-      align-items: center;
-      gap: 7px;
-    }
-
-    .hint-icon {
-      width: 18px; height: 18px;
-      border: 1.5px solid currentColor;
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.6rem;
-      opacity: 0.6;
-      flex-shrink: 0;
-    }
-
-    /* GRID */
-    .grid {
+    .tabs {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      width: 100%;
-      max-width: 860px;
+      border-top: 1px solid var(--line-soft);
+      border-bottom: 1px solid var(--line-soft);
+      background: #f4efe6;
+      position: relative;
+      z-index: 1;
     }
 
-    /* FLIP CARD */
-    .flip-card {
-      height: var(--card-h);
-      perspective: 1400px;
+    .tab-btn {
+      border: 0;
+      background: transparent;
+      padding: 17px 16px 14px;
+      text-align: left;
       cursor: pointer;
+      border-right: 1px solid var(--line-soft);
+      transition: background 200ms ease;
+      min-height: 74px;
     }
 
-    .flip-inner {
-      position: relative;
-      width: 100%; height: 100%;
-      transform-style: preserve-3d;
-      transition: transform 0.62s cubic-bezier(0.42, 0.02, 0.18, 1.0);
-    }
+    .tab-btn:last-child { border-right: 0; }
 
-    .flip-card.flipped .flip-inner {
-      transform: rotateY(180deg);
-    }
+    .tab-btn:hover { background: rgba(255,255,255,0.6); }
 
-    .flip-front, .flip-back {
-      position: absolute;
-      inset: 0;
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-      border-radius: 12px;
-      display: flex;
-      flex-direction: column;
-      padding: 26px 24px 22px;
-    }
-
-    /* FRONT */
-    .flip-front {
-      background: var(--surface);
-      border: 1px solid var(--line-strong);
-      box-shadow: 0 1px 4px rgba(0,0,0,0.05), 0 4px 16px rgba(0,0,0,0.06);
-      justify-content: space-between;
-      overflow: hidden;
-      transition: box-shadow 0.22s, transform 0.22s;
-    }
-
-    .card-benefits .flip-front {
-      background: #e8f5ee;
-      border-color: rgba(30,138,92,0.18);
-    }
-
-    .card-risks .flip-front {
-      background: #faecea;
-      border-color: rgba(212,70,56,0.18);
-    }
-
-    .card-collab .flip-front {
-      background: #e6eff9;
-      border-color: rgba(26,107,181,0.18);
-    }
-
-    .flip-card:hover:not(.flipped) .flip-front {
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 12px 36px rgba(0,0,0,0.10);
-      transform: translateY(-2px);
-    }
-
-    .flip-front::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      border-radius: 12px 12px 0 0;
-    }
-
-    .card-benefits .flip-front::before { background: #1e8a5c; }
-    .card-risks    .flip-front::before { background: #d44638; }
-    .card-collab   .flip-front::before { background: #1a6bb5; }
-
-    .front-top {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .front-icon {
-      font-size: 2rem;
-      line-height: 1;
-      flex-shrink: 0;
-    }
-
-    .card-benefits .front-icon { color: #1e8a5c; }
-    .card-risks    .front-icon { color: #d44638; }
-    .card-collab   .front-icon { color: #1a6bb5; }
-
-    .card-benefits .front-cta { color: #1e8a5c; border-top-color: rgba(30,138,92,0.2); }
-    .card-risks    .front-cta { color: #d44638; border-top-color: rgba(212,70,56,0.2); }
-    .card-collab   .front-cta { color: #1a6bb5; border-top-color: rgba(26,107,181,0.2); }
-
-    .front-body {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      flex: 1;
-      justify-content: flex-end;
-    }
-
-    .front-title {
-      font-size: 1.06rem;
-      font-weight: 700;
-      color: var(--ink);
-      line-height: 1.25;
-      letter-spacing: -0.01em;
-    }
-
-    .front-desc {
-      font-size: 0.78rem;
-      font-weight: 400;
+    .tab-tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
       color: var(--muted);
-      line-height: 1.55;
+      display: block;
+      margin-bottom: 5px;
     }
 
-    .front-cta {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--accent);
-      padding-top: 14px;
-      border-top: 1px solid var(--line);
-    }
-
-    .cta-arrow {
-      display: inline-block;
-      transition: transform 0.2s;
-    }
-
-    .flip-card:hover:not(.flipped) .cta-arrow {
-      transform: translateX(4px);
-    }
-
-    /* BACK */
-    .flip-back {
-      background: var(--surface);
-      border: 1px solid rgba(245,129,31,0.2);
-      box-shadow: 0 1px 4px rgba(0,0,0,0.05), 0 4px 16px rgba(0,0,0,0.06);
-      transform: rotateY(180deg);
-      overflow: hidden;
-    }
-
-    .back-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding-bottom: 12px;
-      margin-bottom: 12px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .back-dot {
-      width: 7px; height: 7px;
-      border-radius: 50%;
-      background: var(--accent);
-      flex-shrink: 0;
-    }
-
-    .back-label {
-      font-size: 0.64rem;
+    .tab-name {
+      font-size: 0.96rem;
       font-weight: 700;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--accent);
-    }
-
-    .back-text {
-      font-size: 0.8rem;
-      font-weight: 400;
-      line-height: 1.72;
       color: var(--ink);
-      flex: 1;
-      overflow-y: auto;
     }
 
-    .back-text ul {
-      list-style: none;
-      margin-top: 8px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
+    .tab-btn.active { background: var(--paper); }
+    .tab-btn.active .tab-tag { color: var(--ink); }
+    .tab-btn.active[data-tab="benefits"] .tab-name { color: var(--teal); }
+    .tab-btn.active[data-tab="risks"] .tab-name { color: var(--rust); }
+    .tab-btn.active[data-tab="interaction"] .tab-name { color: var(--cobalt); }
 
-    .back-text ul li {
-      padding-left: 14px;
+    .content {
+      padding: 22px;
       position: relative;
+      z-index: 1;
+      min-height: 430px;
     }
 
-    .back-text ul li::before {
-      content: '';
-      position: absolute;
-      left: 0; top: 8px;
-      width: 5px; height: 5px;
-      border-radius: 50%;
-      background: var(--accent);
-      opacity: 0.7;
+    .panel { display: none; animation: fadeIn 280ms ease; }
+    .panel.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    .back-footer {
-      margin-top: 10px;
-      padding-top: 10px;
-      border-top: 1px solid var(--line);
+    .statement {
+      border: 1px solid var(--line-soft);
+      background: #fffcf6;
+      border-left: 6px solid var(--teal);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 14px;
+      box-shadow: 0 8px 18px rgba(25, 23, 20, 0.05);
+    }
+
+    .statement.risk { border-left-color: var(--rust); background: #fffaf8; }
+    .statement.interaction { border-left-color: var(--cobalt); background: #fafcff; }
+
+    .statement .kicker {
+      font-family: 'IBM Plex Mono', monospace;
       font-size: 0.66rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
       text-transform: uppercase;
+      letter-spacing: 0.12em;
       color: var(--muted);
+      margin-bottom: 8px;
     }
 
-    .back-text::-webkit-scrollbar { width: 3px; }
-    .back-text::-webkit-scrollbar-track { background: transparent; }
-    .back-text::-webkit-scrollbar-thumb { background: var(--accent-mid); border-radius: 2px; }
+    .statement p {
+      font-size: 0.96rem;
+      line-height: 1.68;
+      color: #3a342d;
+    }
 
-    @media (max-width: 680px) {
-      .grid { grid-template-columns: 1fr; }
-      :root { --card-h: 290px; }
+    .grid-3,
+    .grid-2 {
+      display: grid;
+      gap: 10px;
+    }
+
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+    .note {
+      border: 1px solid var(--line-soft);
+      border-radius: 12px;
+      background: #fff;
+      padding: 14px;
+      display: grid;
+      gap: 7px;
+      min-height: 142px;
+      transition: transform 160ms ease, border-color 160ms ease;
+    }
+
+    .note:hover {
+      transform: translateY(-2px);
+      border-color: var(--line);
+    }
+
+    .note-code {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .note h3 {
+      font-size: 0.9rem;
+      line-height: 1.25;
+    }
+
+    .note p {
+      color: var(--muted);
+      line-height: 1.56;
+      font-size: 0.84rem;
+    }
+
+    .note.benefit h3 { color: var(--teal); }
+    .note.risk h3 { color: var(--rust); }
+    .note.interaction h3 { color: var(--cobalt); }
+
+    .steps {
+      display: grid;
+      gap: 9px;
+      counter-reset: step;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 84px 1fr;
+      gap: 12px;
+      border: 1px solid var(--line-soft);
+      border-radius: 12px;
+      padding: 12px;
+      background: #fff;
+      align-items: start;
+    }
+
+    .step::before {
+      counter-increment: step;
+      content: "0" counter(step);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.82rem;
+      letter-spacing: 0.1em;
+      color: var(--cobalt);
+      border-right: 1px solid var(--line-soft);
+      padding-right: 10px;
+      min-height: 100%;
+      display: flex;
+      align-items: center;
+    }
+
+    .step h4 {
+      font-size: 0.9rem;
+      margin-bottom: 4px;
+      color: var(--ink);
+    }
+
+    .step p {
+      color: var(--muted);
+      font-size: 0.83rem;
+      line-height: 1.54;
+    }
+
+    @media (max-width: 860px) {
+      .grid-3 { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      body { padding: 0; background: #f6f2ea; }
+      .shell { border-radius: 0; border-left: 0; border-right: 0; }
+      .head { padding: 24px 18px 16px; }
+      .tabs { grid-template-columns: 1fr; }
+      .tab-btn { border-right: 0; border-bottom: 1px solid var(--line-soft); min-height: auto; }
+      .tab-btn:last-child { border-bottom: 0; }
+      .content { padding: 14px; }
+      .grid-3,
+      .grid-2 { grid-template-columns: 1fr; }
+      .step { grid-template-columns: 1fr; gap: 8px; }
+      .step::before { border-right: 0; border-bottom: 1px solid var(--line-soft); padding-bottom: 8px; }
     }
   </style>
 </head>
 <body>
+  <main class="shell">
+    <header class="head">
+      <div class="eyebrow">структура финансового блока</div>
+      <h1>Главбух и финдир не конкуренты, а <span>два центра финансовой силы</span> компании</h1>
+      <p class="subtitle">Этот интерактив показывает, где модель дает реальную управленческую устойчивость, в каких точках ломается и как настроить рабочую связку без конфликтов ролей.</p>
+    </header>
 
-  <div class="header">
-    <div class="eyebrow">Иерархическая модель</div>
-    <h1>Финдир — топ-менеджер,<br><span>главбух у него в подчинении</span></h1>
-    <p class="subtitle">Изучите преимущества, оцените риски и разберитесь,<br>как построить рабочий тандем</p>
-  </div>
+    <section class="tabs" role="tablist" aria-label="Секции материала">
+      <button class="tab-btn active" data-tab="benefits" role="tab" aria-selected="true">
+        <span class="tab-tag">section 01</span>
+        <span class="tab-name">Преимущества модели</span>
+      </button>
+      <button class="tab-btn" data-tab="risks" role="tab" aria-selected="false">
+        <span class="tab-tag">section 02</span>
+        <span class="tab-name">Риски без рамок</span>
+      </button>
+      <button class="tab-btn" data-tab="interaction" role="tab" aria-selected="false">
+        <span class="tab-tag">section 03</span>
+        <span class="tab-name">Как выстроить взаимодействие</span>
+      </button>
+    </section>
 
-  <div class="hint">
-    <div class="hint-icon">↺</div>
-    Нажмите на карточку, чтобы перевернуть
-  </div>
-
-  <div class="grid">
-
-    <div class="flip-card card-benefits" tabindex="0" role="button" aria-label="Преимущества">
-      <div class="flip-inner">
-        <div class="flip-front">
-          <div class="front-top">
-            <div class="front-icon">✦</div>
-            <div class="front-title">Преимущества</div>
-          </div>
-          <div class="front-body">
-            <div class="front-desc">Что даёт эта модель генеральному директору и компании</div>
-          </div>
-          <div class="front-cta">Подробнее <span class="cta-arrow">→</span></div>
+    <section class="content">
+      <article class="panel active" data-panel="benefits">
+        <div class="statement">
+          <div class="kicker">базовый тезис</div>
+          <p>Когда главбух и финдир разделяют зоны ответственности, компания получает одновременно точный учет и стратегическое управление деньгами. Это создает не двойное подчинение, а двойной контур надежности.</p>
         </div>
-        <div class="flip-back">
-          <div class="back-header">
-            <div class="back-dot"></div>
-            <div class="back-label">Преимущества</div>
-          </div>
-          <div class="back-text">
-            Такая иерархическая модель позволяет снизить нагрузку на генерального директора — ему не нужно контролировать работу главбуха и вникать в детали.
-          </div>
-          <div class="back-footer">← Нажмите, чтобы закрыть</div>
+        <div class="grid-3">
+          <article class="note benefit">
+            <span class="note-code">control / 01</span>
+            <h3>Независимый финансовый контроль</h3>
+            <p>Главбух не растворяется в стратегии и сохраняет роль объективного внутреннего контролера.</p>
+          </article>
+          <article class="note benefit">
+            <span class="note-code">focus / 02</span>
+            <h3>Профессиональная фокусировка ролей</h3>
+            <p>Финдир концентрируется на развитии бизнеса, главбух на корректности учета и правовых рисках.</p>
+          </article>
+          <article class="note benefit">
+            <span class="note-code">scale / 03</span>
+            <h3>Устойчивость при росте</h3>
+            <p>С ростом оборотов нагрузка разделяется без потери качества аналитики и операционной дисциплины.</p>
+          </article>
         </div>
-      </div>
-    </div>
+      </article>
 
-    <div class="flip-card card-risks" tabindex="0" role="button" aria-label="Риски">
-      <div class="flip-inner">
-        <div class="flip-front">
-          <div class="front-top">
-            <div class="front-icon">⚠</div>
-            <div class="front-title">Риски</div>
-          </div>
-          <div class="front-body">
-            <div class="front-desc">Какие проблемы могут возникнуть при такой структуре</div>
-          </div>
-          <div class="front-cta">Подробнее <span class="cta-arrow">→</span></div>
+      <article class="panel" data-panel="risks">
+        <div class="statement risk">
+          <div class="kicker">сигнал риска</div>
+          <p>Без формализованных границ даже сильная пара руководителей начинает конкурировать за влияние. В результате система теряет скорость решений и управляемость.</p>
         </div>
-        <div class="flip-back">
-          <div class="back-header">
-            <div class="back-dot"></div>
-            <div class="back-label">Риски</div>
-          </div>
-          <div class="back-text">
-            Фокус внимания финансового директора может быть слишком смещён в сторону контроля за работой бухгалтерии в ущерб ключевому функционалу.
-            <br><br>
-            Другой риск — роль бухгалтерии как органа, отвечающего за объективный и независимый учёт и контроль, будет нивелирована до уровня исполнения поручений финансового директора.
-          </div>
-          <div class="back-footer">← Нажмите, чтобы закрыть</div>
+        <div class="grid-2">
+          <article class="note risk">
+            <span class="note-code">conflict / 01</span>
+            <h3>Дублирование функций</h3>
+            <p>Одинаковые задачи решаются параллельно, сотрудники получают противоречивые поручения.</p>
+          </article>
+          <article class="note risk">
+            <span class="note-code">power / 02</span>
+            <h3>Двоевластие в блоке</h3>
+            <p>Неочевидные полномочия провоцируют персональные конфликты вместо работы на общий результат.</p>
+          </article>
+          <article class="note risk">
+            <span class="note-code">speed / 03</span>
+            <h3>Замедление решений</h3>
+            <p>Любой спор по зоне ответственности блокирует быстрые управленческие действия.</p>
+          </article>
+          <article class="note risk">
+            <span class="note-code">trust / 04</span>
+            <h3>Снижение доверия команды</h3>
+            <p>Команда не понимает, кто финально принимает решение, и перестает опираться на структуру.</p>
+          </article>
         </div>
-      </div>
-    </div>
+      </article>
 
-    <div class="flip-card card-collab" tabindex="0" role="button" aria-label="Как наладить взаимодействие">
-      <div class="flip-inner">
-        <div class="flip-front">
-          <div class="front-top">
-            <div class="front-icon">⇄</div>
-            <div class="front-title">Как наладить взаимодействие</div>
-          </div>
-          <div class="front-body">
-            <div class="front-desc">Практические шаги для обоих руководителей</div>
-          </div>
-          <div class="front-cta">Подробнее <span class="cta-arrow">→</span></div>
+      <article class="panel" data-panel="interaction">
+        <div class="statement interaction">
+          <div class="kicker">рабочий протокол</div>
+          <p>Связка работает, когда правила зафиксированы заранее: кто отвечает за учет, кто за финансовую модель, где точки совместного решения и как эскалируются разногласия.</p>
         </div>
-        <div class="flip-back">
-          <div class="back-header">
-            <div class="back-dot"></div>
-            <div class="back-label">Взаимодействие</div>
-          </div>
-          <div class="back-text">
-            Финансовому директору стоит ограничить участие в работе бухгалтерии:
-            <ul>
-              <li>делегировать ведение учёта, разработку учётной политики и подбор подчинённых главбуху, оставив за собой функцию контроля;</li>
-              <li>доверять главбуху и полагаться на его профессиональное суждение в вопросах бухгалтерского и налогового учёта.</li>
-            </ul>
-            <br>
-            Главному бухгалтеру — своевременно представлять готовую отчётность в финансовый блок для трансформации в управленческую.
-          </div>
-          <div class="back-footer">← Нажмите, чтобы закрыть</div>
+        <div class="steps">
+          <article class="step">
+            <div>
+              <h4>Описать границы ответственности</h4>
+              <p>Формализовать зоны «решаю сам», «согласую», «информирую» в регламентах и KPI.</p>
+            </div>
+          </article>
+          <article class="step">
+            <div>
+              <h4>Синхронизировать календарь решений</h4>
+              <p>Зафиксировать регулярные точки сверки: платежный контур, отчетность, прогноз, бюджетные отклонения.</p>
+            </div>
+          </article>
+          <article class="step">
+            <div>
+              <h4>Убрать личный фактор из споров</h4>
+              <p>Разруливать конфликты только через заранее согласованную процедуру, а не через авторитет должности.</p>
+            </div>
+          </article>
+          <article class="step">
+            <div>
+              <h4>Оценивать связку по общему результату</h4>
+              <p>Фокус на устойчивости финансовой системы компании, а не на победе одной роли над другой.</p>
+            </div>
+          </article>
         </div>
-      </div>
-    </div>
-
-  </div>
+      </article>
+    </section>
+  </main>
 
   <script>
-    document.querySelectorAll('.flip-card').forEach(card => {
-      function toggle() { card.classList.toggle('flipped'); }
-      card.addEventListener('click', toggle);
-      card.addEventListener('keydown', e => {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+    const tabs = document.querySelectorAll('.tab-btn');
+    const panels = document.querySelectorAll('.panel');
+
+    function showPanel(id) {
+      tabs.forEach((tab) => {
+        const isActive = tab.dataset.tab === id;
+        tab.classList.toggle('active', isActive);
+        tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
       });
+
+      panels.forEach((panel) => {
+        panel.classList.toggle('active', panel.dataset.panel === id);
+      });
+    }
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => showPanel(tab.dataset.tab));
     });
   </script>
 </body>

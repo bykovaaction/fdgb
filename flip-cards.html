@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="ru">
 <head>
@@ -5,54 +6,48 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Финдир и Главбух</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #f3eee5;
-      --ink: #181614;
-      --muted: #5f5950;
-      --surface: #fffdf8;
-      --line: rgba(24, 22, 20, 0.12);
-      --line-strong: rgba(24, 22, 20, 0.2);
-      --gold: #b8842a;
-      --green: #1f7f58;
-      --red: #be4a3a;
-      --blue: #2d5eaa;
-      --shadow: 0 14px 34px rgba(22, 19, 16, 0.12);
-      --card-h: 354px;
+      --bg: #e8e8e8;
+      --ink: #1c1c1c;
+      --accent: #F5811F;
+      --accent-light: rgba(245,129,31,0.10);
+      --accent-mid: rgba(245,129,31,0.28);
+      --surface: #ffffff;
+      --line: rgba(28,28,28,0.09);
+      --line-strong: rgba(28,28,28,0.13);
+      --muted: rgba(28,28,28,0.46);
+      --card-h: 330px;
     }
 
     body {
-      font-family: 'Manrope', sans-serif;
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
       color: var(--ink);
       min-height: 100vh;
-      background:
-        radial-gradient(circle at 12% 10%, rgba(184,132,42,0.18), transparent 34%),
-        radial-gradient(circle at 92% 16%, rgba(31,127,88,0.12), transparent 28%),
-        linear-gradient(165deg, #f1ece3 0%, #f6f1e9 55%, #efe8dc 100%);
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 56px 22px 74px;
+      padding: 64px 24px 80px;
     }
 
+    /* HEADER */
     .header {
       text-align: center;
-      margin-bottom: 42px;
-      max-width: 720px;
+      margin-bottom: 44px;
+      max-width: 560px;
     }
 
     .eyebrow {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 0.67rem;
-      font-weight: 600;
-      letter-spacing: 0.18em;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 16px;
+      color: var(--accent);
+      margin-bottom: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -61,158 +56,150 @@
 
     .eyebrow::before, .eyebrow::after {
       content: '';
-      width: 34px;
-      height: 1px;
-      background: rgba(184,132,42,0.6);
+      width: 28px; height: 1px;
+      background: var(--accent);
+      opacity: 0.55;
     }
 
     h1 {
-      font-size: clamp(1.5rem, 4.4vw, 2.34rem);
-      font-weight: 800;
-      line-height: 1.13;
-      letter-spacing: -0.03em;
+      font-size: clamp(1.4rem, 3.6vw, 2rem);
+      font-weight: 700;
+      line-height: 1.22;
+      color: var(--ink);
+      letter-spacing: -0.025em;
       margin-bottom: 12px;
     }
 
-    h1 span {
-      color: var(--gold);
-      position: relative;
-      z-index: 1;
-    }
-
-    h1 span::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: -3px;
-      height: 8px;
-      background: rgba(184,132,42,0.2);
-      z-index: -1;
-    }
+    h1 span { color: var(--accent); }
 
     .subtitle {
-      font-size: 0.94rem;
+      font-size: 0.875rem;
       font-weight: 400;
       color: var(--muted);
       line-height: 1.7;
-      max-width: 620px;
-      margin: 0 auto;
     }
 
+    /* HINT */
     .hint {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 0.67rem;
-      font-weight: 600;
+      font-size: 0.72rem;
+      font-weight: 500;
       color: var(--muted);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      margin-bottom: 26px;
+      letter-spacing: 0.04em;
+      margin-bottom: 32px;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 7px;
     }
 
     .hint-icon {
-      width: 18px;
-      height: 18px;
-      border: 1px solid currentColor;
+      width: 18px; height: 18px;
+      border: 1.5px solid currentColor;
       border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.58rem;
-      opacity: 0.8;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.6rem;
+      opacity: 0.6;
+      flex-shrink: 0;
     }
 
+    /* GRID */
     .grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 16px;
       width: 100%;
-      max-width: 980px;
+      max-width: 860px;
     }
 
+    /* FLIP CARD */
     .flip-card {
       height: var(--card-h);
-      perspective: 1500px;
+      perspective: 1400px;
       cursor: pointer;
     }
 
     .flip-inner {
       position: relative;
-      width: 100%;
-      height: 100%;
+      width: 100%; height: 100%;
       transform-style: preserve-3d;
-      transition: transform 0.66s cubic-bezier(0.42, 0.02, 0.18, 1.0);
+      transition: transform 0.62s cubic-bezier(0.42, 0.02, 0.18, 1.0);
     }
 
-    .flip-card.flipped .flip-inner { transform: rotateY(180deg); }
+    .flip-card.flipped .flip-inner {
+      transform: rotateY(180deg);
+    }
 
     .flip-front, .flip-back {
       position: absolute;
       inset: 0;
       backface-visibility: hidden;
       -webkit-backface-visibility: hidden;
-      border-radius: 14px;
+      border-radius: 12px;
       display: flex;
       flex-direction: column;
-      padding: 24px 20px 18px;
-      border: 1px solid var(--line);
-      box-shadow: var(--shadow);
-      overflow: hidden;
+      padding: 26px 24px 22px;
     }
 
+    /* FRONT */
     .flip-front {
+      background: var(--surface);
+      border: 1px solid var(--line-strong);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05), 0 4px 16px rgba(0,0,0,0.06);
       justify-content: space-between;
-      transition: transform 220ms ease, box-shadow 220ms ease;
+      overflow: hidden;
+      transition: box-shadow 0.22s, transform 0.22s;
     }
 
-    .card-benefits .flip-front { background: linear-gradient(160deg, #edf8f2, #f9fffb); border-color: rgba(31,127,88,0.22); }
-    .card-risks .flip-front { background: linear-gradient(160deg, #fdf0ee, #fffaf9); border-color: rgba(190,74,58,0.22); }
-    .card-collab .flip-front { background: linear-gradient(160deg, #ecf3ff, #f9fbff); border-color: rgba(45,94,170,0.22); }
+    .card-benefits .flip-front {
+      background: #e8f5ee;
+      border-color: rgba(30,138,92,0.18);
+    }
+
+    .card-risks .flip-front {
+      background: #faecea;
+      border-color: rgba(212,70,56,0.18);
+    }
+
+    .card-collab .flip-front {
+      background: #e6eff9;
+      border-color: rgba(26,107,181,0.18);
+    }
 
     .flip-card:hover:not(.flipped) .flip-front {
-      transform: translateY(-3px);
-      box-shadow: 0 20px 38px rgba(22, 19, 16, 0.15);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 12px 36px rgba(0,0,0,0.10);
+      transform: translateY(-2px);
     }
 
     .flip-front::before {
       content: '';
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      border-radius: 12px 12px 0 0;
     }
 
-    .card-benefits .flip-front::before { background: var(--green); }
-    .card-risks .flip-front::before { background: var(--red); }
-    .card-collab .flip-front::before { background: var(--blue); }
+    .card-benefits .flip-front::before { background: #1e8a5c; }
+    .card-risks    .flip-front::before { background: #d44638; }
+    .card-collab   .flip-front::before { background: #1a6bb5; }
 
     .front-top {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
     }
 
     .front-icon {
-      font-size: 1.7rem;
+      font-size: 2rem;
       line-height: 1;
       flex-shrink: 0;
-      font-weight: 700;
     }
 
-    .card-benefits .front-icon { color: var(--green); }
-    .card-risks .front-icon { color: var(--red); }
-    .card-collab .front-icon { color: var(--blue); }
+    .card-benefits .front-icon { color: #1e8a5c; }
+    .card-risks    .front-icon { color: #d44638; }
+    .card-collab   .front-icon { color: #1a6bb5; }
 
-    .front-title {
-      font-size: 1.03rem;
-      font-weight: 800;
-      line-height: 1.2;
-      letter-spacing: -0.01em;
-    }
+    .card-benefits .front-cta { color: #1e8a5c; border-top-color: rgba(30,138,92,0.2); }
+    .card-risks    .front-cta { color: #d44638; border-top-color: rgba(212,70,56,0.2); }
+    .card-collab   .front-cta { color: #1a6bb5; border-top-color: rgba(26,107,181,0.2); }
 
     .front-body {
       display: flex;
@@ -222,9 +209,17 @@
       justify-content: flex-end;
     }
 
+    .front-title {
+      font-size: 1.06rem;
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+    }
+
     .front-desc {
-      font-size: 0.82rem;
-      font-weight: 500;
+      font-size: 0.78rem;
+      font-weight: 400;
       color: var(--muted);
       line-height: 1.55;
     }
@@ -233,62 +228,64 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 0.65rem;
+      font-size: 0.7rem;
       font-weight: 600;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      padding-top: 12px;
-      border-top: 1px solid rgba(24,22,20,0.1);
+      color: var(--accent);
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
     }
 
-    .card-benefits .front-cta { color: var(--green); }
-    .card-risks .front-cta { color: var(--red); }
-    .card-collab .front-cta { color: var(--blue); }
+    .cta-arrow {
+      display: inline-block;
+      transition: transform 0.2s;
+    }
 
-    .cta-arrow { transition: transform 0.2s; }
-    .flip-card:hover:not(.flipped) .cta-arrow { transform: translateX(4px); }
+    .flip-card:hover:not(.flipped) .cta-arrow {
+      transform: translateX(4px);
+    }
 
+    /* BACK */
     .flip-back {
       background: var(--surface);
+      border: 1px solid rgba(245,129,31,0.2);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05), 0 4px 16px rgba(0,0,0,0.06);
       transform: rotateY(180deg);
-      border-color: var(--line-strong);
+      overflow: hidden;
     }
 
     .back-header {
       display: flex;
       align-items: center;
       gap: 8px;
-      padding-bottom: 10px;
-      margin-bottom: 10px;
+      padding-bottom: 12px;
+      margin-bottom: 12px;
       border-bottom: 1px solid var(--line);
     }
 
     .back-dot {
-      width: 7px;
-      height: 7px;
+      width: 7px; height: 7px;
       border-radius: 50%;
-      background: var(--gold);
+      background: var(--accent);
       flex-shrink: 0;
     }
 
     .back-label {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 0.62rem;
-      font-weight: 600;
-      letter-spacing: 0.16em;
+      font-size: 0.64rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: var(--gold);
+      color: var(--accent);
     }
 
     .back-text {
       font-size: 0.8rem;
-      font-weight: 500;
-      line-height: 1.7;
-      color: #38322c;
+      font-weight: 400;
+      line-height: 1.72;
+      color: var(--ink);
       flex: 1;
       overflow-y: auto;
-      padding-right: 2px;
     }
 
     .back-text ul {
@@ -307,37 +304,36 @@
     .back-text ul li::before {
       content: '';
       position: absolute;
-      left: 0;
-      top: 8px;
-      width: 5px;
-      height: 5px;
+      left: 0; top: 8px;
+      width: 5px; height: 5px;
       border-radius: 50%;
-      background: var(--gold);
-      opacity: 0.8;
+      background: var(--accent);
+      opacity: 0.7;
     }
 
     .back-footer {
       margin-top: 10px;
       padding-top: 10px;
       border-top: 1px solid var(--line);
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 0.62rem;
+      font-size: 0.66rem;
       font-weight: 600;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: #80766a;
+      color: var(--muted);
     }
 
     .back-text::-webkit-scrollbar { width: 3px; }
-    .back-text::-webkit-scrollbar-thumb { background: rgba(184,132,42,0.5); border-radius: 4px; }
+    .back-text::-webkit-scrollbar-track { background: transparent; }
+    .back-text::-webkit-scrollbar-thumb { background: var(--accent-mid); border-radius: 2px; }
 
-    @media (max-width: 780px) {
-      .grid { grid-template-columns: 1fr; max-width: 540px; }
-      :root { --card-h: 300px; }
+    @media (max-width: 680px) {
+      .grid { grid-template-columns: 1fr; }
+      :root { --card-h: 290px; }
     }
   </style>
 </head>
 <body>
+
   <div class="header">
     <div class="eyebrow">Иерархическая модель</div>
     <h1>Финдир — топ-менеджер,<br><span>главбух у него в подчинении</span></h1>
@@ -350,6 +346,7 @@
   </div>
 
   <div class="grid">
+
     <div class="flip-card card-benefits" tabindex="0" role="button" aria-label="Преимущества">
       <div class="flip-inner">
         <div class="flip-front">
@@ -432,17 +429,15 @@
         </div>
       </div>
     </div>
+
   </div>
 
   <script>
-    document.querySelectorAll('.flip-card').forEach((card) => {
+    document.querySelectorAll('.flip-card').forEach(card => {
       function toggle() { card.classList.toggle('flipped'); }
       card.addEventListener('click', toggle);
-      card.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          toggle();
-        }
+      card.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
       });
     });
   </script>

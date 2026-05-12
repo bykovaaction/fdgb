@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Финдир и Главбух</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #e8e8e8;
+      --ink: #1c1c1c;
+      --accent: #F5811F;
+      --accent-light: rgba(245,129,31,0.10);
+      --accent-mid: rgba(245,129,31,0.28);
+      --surface: #ffffff;
+      --line: rgba(28,28,28,0.09);
+      --line-strong: rgba(28,28,28,0.13);
+      --muted: rgba(28,28,28,0.46);
+      --card-h: 330px;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 64px 24px 80px;
+    }
+
+    /* HEADER */
+    .header {
+      text-align: center;
+      margin-bottom: 44px;
+      max-width: 560px;
+    }
+
+    .eyebrow {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .eyebrow::before, .eyebrow::after {
+      content: '';
+      width: 28px; height: 1px;
+      background: var(--accent);
+      opacity: 0.55;
+    }
+
+    h1 {
+      font-size: clamp(1.4rem, 3.6vw, 2rem);
+      font-weight: 700;
+      line-height: 1.22;
+      color: var(--ink);
+      letter-spacing: -0.025em;
+      margin-bottom: 12px;
+    }
+
+    h1 span { color: var(--accent); }
+
+    .subtitle {
+      font-size: 0.875rem;
+      font-weight: 400;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* HINT */
+    .hint {
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .hint-icon {
+      width: 18px; height: 18px;
+      border: 1.5px solid currentColor;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.6rem;
+      opacity: 0.6;
+      flex-shrink: 0;
+    }
+
+    /* GRID */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      width: 100%;
+      max-width: 860px;
+    }
+
+    /* FLIP CARD */
+    .flip-card {
+      height: var(--card-h);
+      perspective: 1400px;
+      cursor: pointer;
+    }
+
+    .flip-inner {
+      position: relative;
+      width: 100%; height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.62s cubic-bezier(0.42, 0.02, 0.18, 1.0);
+    }
+
+    .flip-card.flipped .flip-inner {
+      transform: rotateY(180deg);
+    }
+
+    .flip-front, .flip-back {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      padding: 26px 24px 22px;
+    }
+
+    /* FRONT */
+    .flip-front {
+      background: var(--surface);
+      border: 1px solid var(--line-strong);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05), 0 4px 16px rgba(0,0,0,0.06);
+      justify-content: space-between;
+      overflow: hidden;
+      transition: box-shadow 0.22s, transform 0.22s;
+    }
+
+    .card-benefits .flip-front {
+      background: #e8f5ee;
+      border-color: rgba(30,138,92,0.18);
+    }
+
+    .card-risks .flip-front {
+      background: #faecea;
+      border-color: rgba(212,70,56,0.18);
+    }
+
+    .card-collab .flip-front {
+      background: #e6eff9;
+      border-color: rgba(26,107,181,0.18);
+    }
+
+    .flip-card:hover:not(.flipped) .flip-front {
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 12px 36px rgba(0,0,0,0.10);
+      transform: translateY(-2px);
+    }
+
+    .flip-front::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      border-radius: 12px 12px 0 0;
+    }
+
+    .card-benefits .flip-front::before { background: #1e8a5c; }
+    .card-risks    .flip-front::before { background: #d44638; }
+    .card-collab   .flip-front::before { background: #1a6bb5; }
+
+    .front-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .front-icon {
+      font-size: 2rem;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .card-benefits .front-icon { color: #1e8a5c; }
+    .card-risks    .front-icon { color: #d44638; }
+    .card-collab   .front-icon { color: #1a6bb5; }
+
+    .card-benefits .front-cta { color: #1e8a5c; border-top-color: rgba(30,138,92,0.2); }
+    .card-risks    .front-cta { color: #d44638; border-top-color: rgba(212,70,56,0.2); }
+    .card-collab   .front-cta { color: #1a6bb5; border-top-color: rgba(26,107,181,0.2); }
+
+    .front-body {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1;
+      justify-content: flex-end;
+    }
+
+    .front-title {
+      font-size: 1.06rem;
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+    }
+
+    .front-desc {
+      font-size: 0.78rem;
+      font-weight: 400;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .front-cta {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
+    }
+
+    .cta-arrow {
+      display: inline-block;
+      transition: transform 0.2s;
+    }
+
+    .flip-card:hover:not(.flipped) .cta-arrow {
+      transform: translateX(4px);
+    }
+
+    /* BACK */
+    .flip-back {
+      background: var(--surface);
+      border: 1px solid rgba(245,129,31,0.2);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05), 0 4px 16px rgba(0,0,0,0.06);
+      transform: rotateY(180deg);
+      overflow: hidden;
+    }
+
+    .back-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-bottom: 12px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .back-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .back-label {
+      font-size: 0.64rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .back-text {
+      font-size: 0.8rem;
+      font-weight: 400;
+      line-height: 1.72;
+      color: var(--ink);
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .back-text ul {
+      list-style: none;
+      margin-top: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .back-text ul li {
+      padding-left: 14px;
+      position: relative;
+    }
+
+    .back-text ul li::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 8px;
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+      opacity: 0.7;
+    }
+
+    .back-footer {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid var(--line);
+      font-size: 0.66rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .back-text::-webkit-scrollbar { width: 3px; }
+    .back-text::-webkit-scrollbar-track { background: transparent; }
+    .back-text::-webkit-scrollbar-thumb { background: var(--accent-mid); border-radius: 2px; }
+
+    @media (max-width: 680px) {
+      .grid { grid-template-columns: 1fr; }
+      :root { --card-h: 290px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="eyebrow">Иерархическая модель</div>
+    <h1>Финдир — топ-менеджер,<br><span>главбух у него в подчинении</span></h1>
+    <p class="subtitle">Изучите преимущества, оцените риски и разберитесь,<br>как построить рабочий тандем</p>
+  </div>
+
+  <div class="hint">
+    <div class="hint-icon">↺</div>
+    Нажмите на карточку, чтобы перевернуть
+  </div>
+
+  <div class="grid">
+
+    <div class="flip-card card-benefits" tabindex="0" role="button" aria-label="Преимущества">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="front-top">
+            <div class="front-icon">✦</div>
+            <div class="front-title">Преимущества</div>
+          </div>
+          <div class="front-body">
+            <div class="front-desc">Что даёт эта модель генеральному директору и компании</div>
+          </div>
+          <div class="front-cta">Подробнее <span class="cta-arrow">→</span></div>
+        </div>
+        <div class="flip-back">
+          <div class="back-header">
+            <div class="back-dot"></div>
+            <div class="back-label">Преимущества</div>
+          </div>
+          <div class="back-text">
+            Такая иерархическая модель позволяет снизить нагрузку на генерального директора — ему не нужно контролировать работу главбуха и вникать в детали.
+          </div>
+          <div class="back-footer">← Нажмите, чтобы закрыть</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flip-card card-risks" tabindex="0" role="button" aria-label="Риски">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="front-top">
+            <div class="front-icon">⚠</div>
+            <div class="front-title">Риски</div>
+          </div>
+          <div class="front-body">
+            <div class="front-desc">Какие проблемы могут возникнуть при такой структуре</div>
+          </div>
+          <div class="front-cta">Подробнее <span class="cta-arrow">→</span></div>
+        </div>
+        <div class="flip-back">
+          <div class="back-header">
+            <div class="back-dot"></div>
+            <div class="back-label">Риски</div>
+          </div>
+          <div class="back-text">
+            Фокус внимания финансового директора может быть слишком смещён в сторону контроля за работой бухгалтерии в ущерб ключевому функционалу.
+            <br><br>
+            Другой риск — роль бухгалтерии как органа, отвечающего за объективный и независимый учёт и контроль, будет нивелирована до уровня исполнения поручений финансового директора.
+          </div>
+          <div class="back-footer">← Нажмите, чтобы закрыть</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flip-card card-collab" tabindex="0" role="button" aria-label="Как наладить взаимодействие">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="front-top">
+            <div class="front-icon">⇄</div>
+            <div class="front-title">Как наладить взаимодействие</div>
+          </div>
+          <div class="front-body">
+            <div class="front-desc">Практические шаги для обоих руководителей</div>
+          </div>
+          <div class="front-cta">Подробнее <span class="cta-arrow">→</span></div>
+        </div>
+        <div class="flip-back">
+          <div class="back-header">
+            <div class="back-dot"></div>
+            <div class="back-label">Взаимодействие</div>
+          </div>
+          <div class="back-text">
+            Финансовому директору стоит ограничить участие в работе бухгалтерии:
+            <ul>
+              <li>делегировать ведение учёта, разработку учётной политики и подбор подчинённых главбуху, оставив за собой функцию контроля;</li>
+              <li>доверять главбуху и полагаться на его профессиональное суждение в вопросах бухгалтерского и налогового учёта.</li>
+            </ul>
+            <br>
+            Главному бухгалтеру — своевременно представлять готовую отчётность в финансовый блок для трансформации в управленческую.
+          </div>
+          <div class="back-footer">← Нажмите, чтобы закрыть</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    document.querySelectorAll('.flip-card').forEach(card => {
+      function toggle() { card.classList.toggle('flipped'); }
+      card.addEventListener('click', toggle);
+      card.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+      });
+    });
+  </script>
+</body>
+</html>
